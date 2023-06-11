@@ -21,11 +21,13 @@ public class BDConnection {
 			File file = new File("login.properties");
 			FileInputStream fis = new FileInputStream(file);
 			properties.load(fis);
+			
 			String driver = String.valueOf(properties.get("DRIVER"));
 			String url = String.valueOf(properties.get("URL"));
 			String user = String.valueOf(properties.get("USER"));
 			String pass = String.valueOf(properties.get("PASS"));
 			Class.forName(driver);
+			
 			conexion = DriverManager.getConnection(url, user, pass);
 		}
 		catch(FileNotFoundException e) {
@@ -34,10 +36,9 @@ public class BDConnection {
 		catch(IOException e) {
 			System.out.println(e.getMessage());
 		} 
-		catch(ClassNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
 		catch(SQLException e) {
+			System.out.println(e.getMessage());
+		} catch (ClassNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 	}

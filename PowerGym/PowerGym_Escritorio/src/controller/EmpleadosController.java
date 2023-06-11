@@ -28,9 +28,14 @@ public class EmpleadosController {
         // Configurar la vista y los eventos...
     }
 
+    public void setVista(EmpleadosInterfaz interfaz) {
+    	this.vista = interfaz;
+    }
+    
     private void cargarEmpleadosDesdeBaseDatos() {
         try {
         	
+        	conexion.startConnection();
             Statement statement = conexion.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM empleados");
 
@@ -64,7 +69,7 @@ public class EmpleadosController {
         }
     }
 
-    private void mostrarEmpleadoEnVista(int indice) {
+    public void mostrarPrimerEmpleadoEnVista(int indice) {
         Empleado empleado = empleados.get(indice);
         vista.setIdText(String.valueOf(empleado.getId()));
         vista.setNombreText(empleado.getNombre());
@@ -75,7 +80,19 @@ public class EmpleadosController {
         vista.setIbanText(empleado.getIban());
     }
 
-    private void limpiarCamposDeTexto() {
+    
+    public void mostrarEmpleadoEnVista(int indice) {
+        Empleado empleado = empleados.get(indice);
+        vista.setIdText(String.valueOf(empleado.getId()));
+        vista.setNombreText(empleado.getNombre());
+        vista.setApellidosText(empleado.getApellidos());
+        vista.setDniText(empleado.getDni());
+        vista.setEmailText(empleado.getEmail());
+        vista.setFechaAltaText(empleado.getFechaAlta());
+        vista.setIbanText(empleado.getIban());
+    }
+
+    public void limpiarCamposDeTexto() {
         vista.setIdText("");
         vista.setNombreText("");
         vista.setApellidosText("");

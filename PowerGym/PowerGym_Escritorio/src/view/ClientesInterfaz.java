@@ -1,10 +1,8 @@
 package view;
-import model.Cliente;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import controller.ClientesController;
 
 public class ClientesInterfaz extends JFrame {
     private JLabel lblId;
@@ -24,24 +22,20 @@ public class ClientesInterfaz extends JFrame {
     private JButton btnAnterior;
     private JButton btnSiguiente;
     private JButton btnBuscar;
-    private JButton btnMenuPrincipal; // Botón para volver al menú principal
-    private ArrayList<Cliente> listaClientes;
-    private int indiceActual;
+    private JButton btnMenuPrincipal;
 
-    public ClientesInterfaz() {
-        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
-        Cliente cliente = new Cliente();
-        clientes.add(cliente);
+    private ClientesController controller;
 
-        // Configurar la ventana de clientes
-        setTitle("PowerGym - Clientes");
+    public ClientesInterfaz(ClientesController controller) {
+        this.controller = controller;
+
+        this.controller = controller;
+
+        // Configurar la ventana de empleados
+        setTitle("PowerGym - Empleados");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-
-        // Inicializar la lista de clientes y el índice actual
-        listaClientes = clientes;
-        indiceActual = 0;
 
         // Crear los componentes
         lblId = new JLabel("ID:");
@@ -81,7 +75,7 @@ public class ClientesInterfaz extends JFrame {
         btnAnterior.setBounds(50, 330, 100, 30);
         btnSiguiente.setBounds(160, 330, 100, 30);
         btnBuscar.setBounds(320, 50, 100, 30);
-        btnMenuPrincipal.setBounds(320, 478, 150, 30);
+        btnMenuPrincipal.setBounds(320, 476, 150, 30);
 
         // Agregar los componentes a la ventana
         getContentPane().add(lblId);
@@ -103,75 +97,47 @@ public class ClientesInterfaz extends JFrame {
         getContentPane().add(btnBuscar);
         getContentPane().add(btnMenuPrincipal);
 
-        // Configurar el ActionListener para el botón "Anterior"
-        btnAnterior.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (indiceActual > 0) {
-                    indiceActual--;
-                    mostrarClienteActual();
-                }
-            }
-        });
-
-        // Configurar el ActionListener para el botón "Siguiente"
-        btnSiguiente.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (indiceActual < listaClientes.size() - 1) {
-                    indiceActual++;
-                    mostrarClienteActual();
-                }
-            }
-        });
-
-        // Configurar el ActionListener para el botón "Buscar"
-        btnBuscar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int idBuscado = Integer.parseInt(txtId.getText());
-                Cliente clienteEncontrado = buscarClientePorId(idBuscado);
-                if (clienteEncontrado != null) {
-                    int indiceEncontrado = listaClientes.indexOf(clienteEncontrado);
-                    indiceActual = indiceEncontrado;
-                    mostrarClienteActual();
-                } else {
-                    JOptionPane.showMessageDialog(ClientesInterfaz.this, "No se encontró ningún cliente con ese ID.",
-                            "Búsqueda de Cliente", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-
-        // Configurar el ActionListener para el botón "Menú Principal"
-        btnMenuPrincipal.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para volver al menú principal
-                dispose(); // Cerrar la ventana actual
-                MenuPrincipalInterfaz menuPrincipal = new MenuPrincipalInterfaz();
-                menuPrincipal.setVisible(true);
-            }
-        });
-
-        // Mostrar el primer cliente de la lista
-        mostrarClienteActual();
-
+        // Configurar el layout
         getContentPane().setLayout(null);
+
+        // Configurar el botón "Menú Principal" como el botón predeterminado (se activa al presionar Enter)
+        getRootPane().setDefaultButton(btnMenuPrincipal);
+
+        // Asignar listeners a los botones
+        btnAnterior.addActionListener(e -> controller.mostrarClienteAnterior());
+        btnSiguiente.addActionListener(e -> controller.mostrarClienteSiguiente());
+        btnBuscar.addActionListener(e -> {
+            String id = txtId.getText();
+            controller.buscarCliente(id);
+        });
+       // btnMenuPrincipal.addActionListener(e -> controller.volverMenuPrincipal());
     }
 
-    private void mostrarClienteActual() {
-        Cliente cliente = listaClientes.get(indiceActual);
-        txtId.setText(String.valueOf(cliente.getId()));
-        txtNombre.setText(cliente.getNombre());
-        txtApellidos.setText(cliente.getApellidos());
-        txtDni.setText(cliente.getDni());
-        txtEmail.setText(cliente.getEmail());
-        txtFechaAlta.setText(cliente.getFechaAlta());
-        txtIban.setText(cliente.getIban());
+    public void setIdText(String id) {
+        txtId.setText(id);
     }
 
-    private Cliente buscarClientePorId(int id) {
-        for (Cliente cliente : listaClientes) {
-            if (cliente.getId() == id) {
-                return cliente;
-            }
-        }
-        return null;
+    public void setNombreText(String nombre) {
+        txtNombre.setText(nombre);
+    }
+
+    public void setApellidosText(String apellidos) {
+        txtApellidos.setText(apellidos);
+    }
+
+    public void setDniText(String dni) {
+        txtDni.setText(dni);
+    }
+
+    public void setEmailText(String email) {
+        txtEmail.setText(email);
+    }
+
+    public void setFechaAltaText(String fechaAlta) {
+        txtFechaAlta.setText(fechaAlta);
+    }
+
+    public void setIbanText(String iban) {
+        txtIban.setText(iban);
     }
 }

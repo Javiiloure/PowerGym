@@ -83,20 +83,30 @@ public class MenuPrincipalInterfaz extends JFrame {
     }
 
     private void abrirVentanaClientes() {
-    	ClientesInterfaz ventanaClientes = new ClientesInterfaz();
-        ventanaClientes.setVisible(true);
+    	ClientesController controller = new ClientesController();
+    	ClientesInterfaz ventanaClientes = new ClientesInterfaz(controller);
+    	controller.setVista(ventanaClientes);
+    	controller.mostrarPrimerClienteEnVista(0);
+    	ventanaClientes.setVisible(true);
         setVisible(false);
     }
 
     private void abrirVentanaEmpleados() {
     	EmpleadosController controller = new EmpleadosController();
     	EmpleadosInterfaz ventanaEmpleados = new EmpleadosInterfaz(controller);
-        ventanaEmpleados.setVisible(true);
+    	controller.setVista(ventanaEmpleados);
+    	controller.mostrarPrimerEmpleadoEnVista(0);
+    	ventanaEmpleados.setVisible(true);
         setVisible(false);
     }
 
     private void abrirVentanaClases() {
-        // Lógica para abrir la ventana de clases
+    	ClasesController controller = new ClasesController();
+    	ClasesInterfaz ventanaClases = new ClasesInterfaz(controller);
+    	controller.setVista(ventanaClases);
+    	//controller.mostrarPrimerEmpleadoEnVista(0);
+    	ventanaClases.setVisible(true);
+        setVisible(false);
     }
 
     private void abrirVentanaContabilidad() {

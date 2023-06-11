@@ -195,6 +195,3 @@ public class EmpleadosInterfaz extends JFrame {
         addWindowListener(listener);
     }
 }
-
-
-
